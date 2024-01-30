@@ -68,38 +68,51 @@ static double EvaluateEquation(string equation)
 
 }
 
-string equation = "";
-bool finished = false;
-
-while (!finished)
+static void StartCalc()
 {
 
-    string[] equationList = equation.Split(";");
+    string equation = "";
+    bool finished = false;
 
-    if (equation.Length == 0)
+    while (!finished)
     {
-        equation = AddNumber();
+
+        string[] equationList = equation.Split(";");
+
+        if (equation.Length == 0)
+        {
+            equation = AddNumber();
+
+        }
+        else if (equationList.Length % 2 != 0)
+        {
+            equation = equation + ';' + AddOperator();
+        }
+        else
+        {
+            equation = equation + ';' + AddNumber();
+        }
+
+        if (equation.Contains('='))
+        {
+            finished = true;
+        }
+        else
+        {
+            Console.WriteLine(FilterEquation(equation));
+        }
 
     }
-    else if (equationList.Length % 2 != 0)
-    {
-        equation = equation + ';' + AddOperator();
-    }
-    else
-    {
-        equation = equation + ';' + AddNumber();
-    }
 
-    if (equation.Contains('='))
-    {
-        finished = true;
-    }
-    else
-    {
-        Console.WriteLine(FilterEquation(equation));
-    }
+    Console.Write(FilterEquation(equation) + " = ");
+    Console.Write(EvaluateEquation(equation));
 
 }
 
-Console.Write(FilterEquation(equation) + " = ");
-Console.Write(EvaluateEquation(equation));
+while (true)
+{
+
+    StartCalc();
+    Console.WriteLine();
+
+}
